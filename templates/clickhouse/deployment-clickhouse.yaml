@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.clickhouse.applicationName }}
-  # namespace: {{ .Values.clickhouse.namespace }}
 spec:
   replicas: {{ .Values.clickhouse.replicas }}
   selector:
@@ -22,11 +21,20 @@ spec:
           image: {{ .Values.clickhouse.image }}
           env:
             - name: CLICKHOUSE_DB
-              value: {{ .Values.clickhouse.clickhouseDB }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.clickhouse.name }}
+                  key: CLICKHOUSE_DB
             - name: CLICKHOUSE_USER
-              value: {{ .Values.clickhouse.clickhouseUser }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.clickhouse.name }}
+                  key: CLICKHOUSE_USER
             - name: CLICKHOUSE_PASSWORD
-              value: {{ .Values.clickhouse.clickhousePassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.clickhouse.name }}
+                  key: CLICKHOUSE_PASSWORD
           ports:
             - containerPort: {{ .Values.clickhouse.port_1 }}
             - containerPort: {{ .Values.clickhouse.port_2 }}
@@ -49,13 +57,13 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
             failureThreshold: 3
-          resources:
-            requests:
-                cpu: {{ .Values.clickhouse.resources.requests.cpu }}
-                memory: {{ .Values.clickhouse.resources.requests.memory }}
-            limits:
-                cpu: {{ .Values.clickhouse.resources.limits.cpu | quote }}
-                memory: {{ .Values.clickhouse.resources.limits.memory }}
+          # resources:
+          #   requests:
+          #       cpu: {{ .Values.clickhouse.resources.requests.cpu }}
+          #       memory: {{ .Values.clickhouse.resources.requests.memory }}
+          #   limits:
+          #       cpu: {{ .Values.clickhouse.resources.limits.cpu | quote }}
+          #       memory: {{ .Values.clickhouse.resources.limits.memory }}
       volumes:
         - name: {{ .Values.clickhouse.volumeName_data }}
           persistentVolumeClaim:

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.postgresql.applicationName }}
-  # namespace: {{ .Values.postgresql.namespace }}
 spec:
   replicas: {{ .Values.postgresql.replicas }}
   selector:
@@ -20,14 +19,20 @@ spec:
             - containerPort: {{ .Values.postgresql.port }}
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.username }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.postgresql.name }}
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresql.password }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.postgresql.name }}
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.postgresql.database }}
-          volumeMounts:
-            - name: {{ .Values.postgresql.volumeName }}
-              mountPath: {{ .Values.postgresql.mountPath }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.postgresql.name }}
+                  key: POSTGRES_DB
           livenessProbe:
             exec:
               command: ["pg_isready", "-U", "postgres"]

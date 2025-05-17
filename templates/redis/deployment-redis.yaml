@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.redis.applicationName }}
-  # namespace: {{ .Values.redis.namespace }}
 spec:
   replicas: {{ .Values.redis.replicas }}
   selector:
@@ -21,7 +20,10 @@ spec:
             - "$(REDIS_PASSWORD)"
           env:
             - name: REDIS_PASSWORD
-              value: {{ .Values.redis.password }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.redis.name }}
+                  key: REDIS_PASSWORD
           ports:
             - containerPort: {{ .Values.redis.port }}
           livenessProbe:

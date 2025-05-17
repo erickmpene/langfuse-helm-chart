@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.minio.applicationName }}
-  # namespace: {{ .Values.minio.namespace }}
 spec:
   replicas: {{ .Values.minio.replicas }}
   selector:
@@ -30,9 +29,15 @@ spec:
             - {{ .Values.minio.mountPath }}
           env:
             - name: MINIO_ROOT_USER
-              value: {{ .Values.minio.minioRootUser }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.minio.name }}
+                  key: MINIO_ROOT_USER
             - name: MINIO_ROOT_PASSWORD
-              value: {{ .Values.minio.minioRootPassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.minio.name }}
+                  key: MINIO_ROOT_PASSWORD
           ports:
             - containerPort: {{ .Values.minio.port_1 }}
             - containerPort: {{ .Values.minio.port_2 }}
@@ -51,13 +56,13 @@ spec:
               port: {{ .Values.minio.port_1 }}
             initialDelaySeconds: 5
             periodSeconds: 10
-          resources:
-            requests:
-                cpu: {{ .Values.minio.resources.requests.cpu }}
-                memory: {{ .Values.minio.resources.requests.memory }}
-            limits:
-                cpu: {{ .Values.minio.resources.limits.cpu | quote }}
-                memory: {{ .Values.minio.resources.limits.memory }}
+          # resources:
+          #   requests:
+          #       cpu: {{ .Values.minio.resources.requests.cpu }}
+          #       memory: {{ .Values.minio.resources.requests.memory }}
+          #   limits:
+          #       cpu: {{ .Values.minio.resources.limits.cpu | quote }}
+          #       memory: {{ .Values.minio.resources.limits.memory }}
       volumes:
         - name: {{ .Values.minio.volumeName }}
           persistentVolumeClaim:

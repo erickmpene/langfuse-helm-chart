@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.langfuse_worker.applicationName }}
-  # namespace: {{ .Values.langfuse_worker.namespace }}
 spec:
   replicas: {{ .Values.langfuse_worker.replicas }}
   selector:
@@ -29,71 +28,71 @@ spec:
                 memory: {{ .Values.langfuse_worker.resources.limits.memory }}
           envFrom:
             - configMapRef:
-                name: {{ .Values.langfuse_worker.namespace }}-configmap
+                name: {{ .Values.langfuse_worker.nameConfigmap }}
 
           env:
             - name: LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY
 
             - name: LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID
 
             - name: LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID
 
             - name: CLICKHOUSE_USER
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: CLICKHOUSE_USER
 
             - name: SALT
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: SALT
 
             - name: CLICKHOUSE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: CLICKHOUSE_PASSWORD
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: DATABASE_URL
 
             - name: LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY
 
             - name: REDIS_AUTH
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: REDIS_AUTH
 
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: ENCRYPTION_KEY
 
             - name: NEXTAUTH_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: langfuse-secret
+                  name: {{ .Values.secret.langfuse.name }}
                   key: NEXTAUTH_SECRET

@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.langfuse_worker.namespace }}-configmap
-  # namespace: {{ .Values.langfuse_worker.namespace }}
+  name: {{ .Values.langfuse_worker.nameConfigmap }}
 data:
   LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "true"
   CLICKHOUSE_CLUSTER_ENABLED: "false"

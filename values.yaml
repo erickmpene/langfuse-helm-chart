@@ -1,22 +1,13 @@
-namespace:
-  create: true
-  name: langfuse
-
-
 postgresql:
   enabled: true
-  applicationName: postgresql
+  applicationName: langfuse-postgresql
   image: postgres:17
   containerName: postgres
-  username: langfuse
-  password: changeme
-  database: langfuse
   volumeName: postgres-storage
   claimName: postgres-storage
   mountPath: /var/lib/postgresql/data
   storageClassName: nfs-prod
   typeService: ClusterIP
-  # namespace: langfuse
   replicas: 1
   port: 5432
   storage:
@@ -31,12 +22,10 @@ postgresql:
 
 redis:
   enabled: true
-  applicationName: redis
+  applicationName: langfuse-redis
   image: redis:7
   containerName: redis
   port: 6379
-  password: MyRedisPassword
-  # namespace: langfuse
   replicas: 1
   typeService: ClusterIP
   resources:
@@ -49,13 +38,11 @@ redis:
 
 minio:
   enabled: true
-  applicationName: minio
+  applicationName: langfuse-minio
   image: minio/minio
   containerName: minio
   port_1: 9000
   port_2: 9001
-  minioRootUser: minio
-  minioRootPassword: minioPassword
   bucketName: langfuse
   mountPath: /data
   volumeName: minio-storage
@@ -63,7 +50,6 @@ minio:
   storageClassName: nfs-prod
   storage:
     size: 3Gi
-  # namespace: langfuse
   replicas: 1
   typeService: NodePort
   resources:
@@ -76,15 +62,11 @@ minio:
 
 clickhouse:
   enabled: true
-  applicationName: clickhouse
-  # namespace: langfuse
+  applicationName: langfuse-clickhouse
   image: clickhouse/clickhouse-server
   containerName: clickhouse
   port_1: 8123
   port_2: 9000
-  clickhouseDB: clickhouse
-  clickhouseUser: clickhouse
-  clickhousePassword: clickhouse
   mountPath_data: /var/lib/clickhouse
   volumeName_data: clickhouse-data
   mountPath_logs: /var/log/clickhouse-server
@@ -108,9 +90,9 @@ clickhouse:
 langfuse_worker:
   enabled: true
   applicationName: langfuse-worker
-  # namespace: langfuse
   image: langfuse/langfuse-worker:3
   containerName: langfuse-worker
+  nameConfigmap: langfuse-configmap
   replicas: 1
   port: 3030
   resources:
@@ -124,7 +106,6 @@ langfuse_worker:
 langfuse_web:
   enabled: true
   applicationName: langfuse-web
-  # namespace: langfuse
   image: langfuse/langfuse:3
   containerName: langfuse-web
   replicas: 1
@@ -140,25 +121,28 @@ langfuse_web:
 
 secret:
   clickhouse:
+    name: clickhouse-secret
     CLICKHOUSE_USER: clickhouse
     CLICKHOUSE_PASSWORD: clickhouse
     CLICKHOUSE_DB: langfuse
   minio:
+    name: minio-secret
     MINIO_ROOT_USER: minio
     MINIO_ROOT_PASSWORD: miniosecret
   postgresql:
+    name: postgres-secret
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
     POSTGRES_DB: langfuse
   redis:
+    name: redis-secret
     REDIS_PASSWORD: myredissecret
-  langfuse: 
+  langfuse:
+    name: langfuse-secret
     LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: "miniosecret"
     LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: "minio"
     LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: "minio"
-    CLICKHOUSE_USER: "clickhouse"
     SALT: "mysalt"
-    CLICKHOUSE_PASSWORD: "clickhouse"
     DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/langfuse"
     LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: "miniosecret"
     REDIS_AUTH: "myredissecret"
