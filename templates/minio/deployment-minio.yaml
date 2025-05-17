@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.minio.applicationName }}
+  namespace: {{ .Values.minio.namespace }}
+spec:
+  replicas: {{ .Values.minio.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.minio.applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.minio.applicationName }}
+    spec:
+      initContainers:
+        - name: init-bucket
+          image: busybox
+          command: ["sh", "-c", "mkdir -p {{ .Values.minio.mountPath }}/langfuse"]
+          volumeMounts:
+            - name: {{ .Values.minio.volumeName }}
+              mountPath: {{ .Values.minio.mountPath }}
+      containers:
+        - name: {{ .Values.minio.containerName }}
+          image: {{ .Values.minio.image }}
+          args:
+            - server
+            - --address=:{{ .Values.minio.port_1 }}
+            - --console-address=:{{ .Values.minio.port_2 }}
+            - {{ .Values.minio.mountPath }}
+          env:
+            - name: MINIO_ROOT_USER
+              value: {{ .Values.minio.minioRootUser }}
+            - name: MINIO_ROOT_PASSWORD
+              value: {{ .Values.minio.minioRootPassword }}
+          ports:
+            - containerPort: {{ .Values.minio.port_1 }}
+            - containerPort: {{ .Values.minio.port_2 }}
+          volumeMounts:
+            - name: {{ .Values.minio.volumeName }}
+              mountPath: {{ .Values.minio.mountPath }}
+          livenessProbe:
+            httpGet:
+              path: /minio/health/live
+              port: {{ .Values.minio.port_1 }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /minio/health/ready
+              port: {{ .Values.minio.port_1 }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+                cpu: {{ .Values.minio.resources.requests.cpu }}
+                memory: {{ .Values.minio.resources.requests.memory }}
+            limits:
+                cpu: {{ .Values.minio.resources.limits.cpu | quote }}
+                memory: {{ .Values.minio.resources.limits.memory }}
+      volumes:
+        - name: {{ .Values.minio.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.minio.claimName }}

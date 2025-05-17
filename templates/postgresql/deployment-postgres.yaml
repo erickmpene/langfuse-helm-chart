@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.postgresql.applicationName }}
   namespace: {{ .Values.postgresql.namespace }}
 spec:
-  replicas: {{ .Values.postgresql.replication }}
+  replicas: {{ .Values.postgresql.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.postgresql.applicationName }}

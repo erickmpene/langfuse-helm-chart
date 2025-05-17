@@ -12,7 +12,7 @@ postgresql:
   storageClassName: nfs-prod
   typeService: ClusterIP
   namespace: langfuse
-  replication: 1
+  replicas: 1
   port: 5432
   storage:
     size: 3Gi
@@ -23,3 +23,49 @@ postgresql:
     limits:
       cpu: "500m"
       memory: "512Mi"
+
+redis:
+  enabled: true
+  applicationName: redis
+  image: redis:7
+  containerName: redis
+  port: 6379
+  password: MyRedisPassword
+  namespace: langfuse
+  replicas: 1
+  typeService: ClusterIP
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+minio:
+  enabled: true
+  applicationName: minio
+  image: minio/minio
+  containerName: minio
+  port_1: 9000
+  port_2: 9001
+  minioRootUser: minio
+  minioRootPassword: minioPassword
+  mountPath: /data
+  volumeName: minio-storage
+  claimName: minio-storage
+  storageClassName: nfs-prod
+  storage:
+    size: 3Gi
+  namespace: langfuse
+  replicas: 1
+  typeService: NodePort
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+
