@@ -1,2 +1,2 @@
-# k8s-langfuse-v3
+# langfuse-helm-chart
 Deploy langfuse v3 in a Kubernetes cluster
