@@ -9,6 +9,7 @@ postgresql:
   volumeName: postgres-storage
   claimName: postgres-storage
   mountPath: /var/lib/postgresql/data
+  storageClassName: nfs-langfuse
   typeService: ClusterIP
   namespace: langfuse
   replication: 1
