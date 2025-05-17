@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.minio.applicationName }}
-  namespace: {{ .Values.minio.namespace }}
+  # namespace: {{ .Values.minio.namespace }}
 spec:
   replicas: {{ .Values.minio.replicas }}
   selector:
@@ -16,7 +16,7 @@ spec:
       initContainers:
         - name: init-bucket
           image: busybox
-          command: ["sh", "-c", "mkdir -p {{ .Values.minio.mountPath }}/langfuse"]
+          command: ["sh", "-c", "mkdir -p {{ .Values.minio.mountPath }}/{{ .Values.minio.bucketName }}"]
           volumeMounts:
             - name: {{ .Values.minio.volumeName }}
               mountPath: {{ .Values.minio.mountPath }}

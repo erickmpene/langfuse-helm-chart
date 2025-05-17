@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.clickhouse.applicationName }}
-  namespace: {{ .Values.clickhouse.namespace }}
+  # namespace: {{ .Values.clickhouse.namespace }}
 spec:
   replicas: {{ .Values.clickhouse.replicas }}
   selector:

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.redis.applicationName }}
-  namespace: {{ .Values.redis.namespace }}
+  # namespace: {{ .Values.redis.namespace }}
 spec:
   replicas: {{ .Values.redis.replicas }}
   selector:

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: langfuse-{{ .Values.minio.applicationName }}
-  namespace: {{ .Values.minio.namespace }}
+  # namespace: {{ .Values.minio.namespace }}
 spec:
   selector:
     app: {{ .Values.minio.applicationName }}

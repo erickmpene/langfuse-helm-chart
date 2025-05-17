@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.langfuse_worker.namespace }}-configmap
+  # namespace: {{ .Values.langfuse_worker.namespace }}
+data:
+  LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "true"
+  CLICKHOUSE_CLUSTER_ENABLED: "false"
+  REDIS_HOST: "langfuse-{{ .Values.redis.applicationName }}"
+  LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: "http://langfuse-{{ .Values.minio.applicationName }}:{{ .Values.minio.port_1 }}"
+  LANGFUSE_S3_EVENT_UPLOAD_REGION: "auto"
+  LANGFUSE_S3_EVENT_UPLOAD_PREFIX: "events/"
+  LANGFUSE_S3_EVENT_UPLOAD_BUCKET: "{{ .Values.minio.bucketName }}"
+  LANGFUSE_S3_MEDIA_UPLOAD_REGION: "auto"
+  LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+  LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: "{{ .Values.minio.bucketName }}"
+  LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: "http://localhost:9090"
+  CLICKHOUSE_MIGRATION_URL: "clickhouse://langfuse-{{ .Values.clickhouse.applicationName }}:{{ .Values.clickhouse.port_2 }}"
+  REDIS_PORT: "{{ .Values.redis.port }}"
+  LANGFUSE_INGESTION_QUEUE_DELAY_MS:
+  LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS:
+  CLICKHOUSE_URL: "http://langfuse-{{ .Values.clickhouse.applicationName }}:8123"
+  LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: "media/"
+  LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
+  TELEMETRY_ENABLED: "true"
+  REDIS_TLS_ENABLED: "false"
+  NEXTAUTH_URL: "http://localhost:3000"
+  REDIS_TLS_CERT: "/certs/redis.crt"
+  REDIS_TLS_CA: "/certs/ca.crt"
+  REDIS_TLS_KEY: "/certs/redis.key"

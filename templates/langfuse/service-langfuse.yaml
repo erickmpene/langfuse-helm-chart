@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.langfuse_web.applicationName }}
+#   namespace: {{ .Values.langfuse_web.namespace }}
+spec:
+  selector:
+    app: {{ .Values.langfuse_web.applicationName }}
+  ports:
+    - name: http
+      port: {{ .Values.langfuse_web.port }}
+      targetPort: {{ .Values.langfuse_web.port }}
+  type: {{ .Values.langfuse_web.typeService }}
