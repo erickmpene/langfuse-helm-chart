@@ -1,42 +1,24 @@
-clickhouse:
-  enabled: true
-  image: clickhouse/clickhouse-server
-  resources: {}
-  storage: 10Gi
-
 postgresql:
   enabled: true
-  image: postgres:15
-  storage: 10Gi
-  password: "changeme"
-
-redis:
-  enabled: true
-  image: redis:7
-  storage: 5Gi
-
-minio:
-  enabled: true
-  image: minio/minio
-  accessKey: "minioadmin"
-  secretKey: "minioadmin"
-  bucket: "langfuse"
-
-langfuse:
-  image:
-    repository: ghcr.io/langfuse/langfuse
-    tag: v3.0.0
-  env:
-    NEXTAUTH_SECRET: "changeme"
-    DATABASE_URL: "postgresql://langfuse:changeme@postgresql:5432/langfuse"
-    CLICKHOUSE_URL: "http://clickhouse:8123"
-    REDIS_URL: "redis://redis:6379"
-    S3_BUCKET: "langfuse"
-    S3_ENDPOINT: "http://minio:9000"
-    S3_ACCESS_KEY_ID: "minioadmin"
-    S3_SECRET_ACCESS_KEY: "minioadmin"
-    TELEMETRY_ENABLED: "false"
-  web:
-    replicas: 1
-  worker:
-    replicas: 1
+  applicationName: postgresql
+  image: postgres:17
+  containerName: postgres
+  username: langfuse
+  password: changeme
+  database: langfuse
+  volumeName: postgres-storage
+  claimName: "postgres-storage"
+  mountPath: /var/lib/postgresql/data
+  typeService: ClusterIP
+  namespace: langfuse
+  replication: 1
+  port: 5432
+  storage:
+    size: 10Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.postgresql.applicationName }}
+  namespace: {{ .Values.postgresql.namespace }}
+spec:
+  replicas: {{ .Values.postgresql.replication }}
+  selector:
+    matchLabels:
+      app: {{ .Values.postgresql.applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.postgresql.applicationName }}
+    spec:
+      containers:
+        - name: {{ .Values.postgresql.containerName }}
+          image: {{ .Values.postgresql.image }}
+          ports:
+            - containerPort: {{ .Values.postgresql.port }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.username }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgresql.database }}
+          volumeMounts:
+            - name: {{ .Values.postgresql.volumeName }}
+              mountPath: {{ .Values.postgresql.mountPath }}
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+                cpu: {{ .Values.postgresql.resources.requests.cpu }}
+                memory: {{ .Values.postgresql.resources.requests.memory }}
+            limits:
+                cpu: {{ .Values.postgresql.resources.limits.cpu | quote }}
+                memory: {{ .Values.postgresql.resources.limits.memory }}
+      volumes:
+        - name: {{ .Values.postgresql.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.postgresql.claimName }}
