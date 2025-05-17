@@ -7,7 +7,7 @@ postgresql:
   password: changeme
   database: langfuse
   volumeName: postgres-storage
-  claimName: "postgres-storage"
+  claimName: postgres-storage
   mountPath: /var/lib/postgresql/data
   typeService: ClusterIP
   namespace: langfuse
