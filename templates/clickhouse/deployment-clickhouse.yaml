@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.clickhouse.applicationName }}
+  namespace: {{ .Values.clickhouse.namespace }}
+spec:
+  replicas: {{ .Values.clickhouse.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.clickhouse.applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.clickhouse.applicationName }}
+    spec:
+      securityContext:
+        fsGroup: 101
+        runAsUser: 101
+        runAsGroup: 101
+      containers:
+        - name: {{ .Values.clickhouse.containerName }}
+          image: {{ .Values.clickhouse.image }}
+          env:
+            - name: CLICKHOUSE_DB
+              value: {{ .Values.clickhouse.clickhouseDB }}
+            - name: CLICKHOUSE_USER
+              value: {{ .Values.clickhouse.clickhouseUser }}
+            - name: CLICKHOUSE_PASSWORD
+              value: {{ .Values.clickhouse.clickhousePassword }}
+          ports:
+            - containerPort: {{ .Values.clickhouse.port_1 }}
+            - containerPort: {{ .Values.clickhouse.port_2 }}
+          volumeMounts:
+            - name: {{ .Values.clickhouse.volumeName_data }}
+              mountPath: {{ .Values.clickhouse.mountPath_data }}
+            - name: {{ .Values.clickhouse.volumeName_logs }}
+              mountPath: {{ .Values.clickhouse.mountPath_logs }}
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: {{ .Values.clickhouse.port_1 }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: {{ .Values.clickhouse.port_1 }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+                cpu: {{ .Values.clickhouse.resources.requests.cpu }}
+                memory: {{ .Values.clickhouse.resources.requests.memory }}
+            limits:
+                cpu: {{ .Values.clickhouse.resources.limits.cpu | quote }}
+                memory: {{ .Values.clickhouse.resources.limits.memory }}
+      volumes:
+        - name: {{ .Values.clickhouse.volumeName_data }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.clickhouse.claimName_data }}
+        - name: {{ .Values.clickhouse.volumeName_logs }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.clickhouse.claimName_logs }}

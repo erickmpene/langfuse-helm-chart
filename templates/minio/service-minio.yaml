@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.minio.namespace }}
 spec:
   selector:
-    app: {{ .Values.minio.namespace }}
+    app: {{ .Values.minio.applicationName }}
   ports:
     - name: api
       port: {{ .Values.minio.port_1 }}

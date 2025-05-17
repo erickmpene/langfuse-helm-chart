@@ -68,4 +68,33 @@ minio:
       cpu: "500m"
       memory: "512Mi"
 
-
+clickhouse:
+  enabled: true
+  applicationName: clickhouse
+  namespace: langfuse
+  image: clickhouse/clickhouse-server
+  containerName: clickhouse
+  port_1: 8123
+  port_2: 9000
+  clickhouseDB: clickhouse
+  clickhouseUser: clickhouse
+  clickhousePassword: clickhouse
+  mountPath_data: /var/lib/clickhouse
+  volumeName_data: clickhouse-data
+  mountPath_logs: /var/log/clickhouse-server
+  volumeName_logs: clickhouse-logs
+  claimName_data: clickhouse-storage-data
+  claimName_logs: clickhouse-storage-logs
+  storageClassName: nfs-prod
+  storage:
+    size_data: 3Gi
+    size_logs: 2Gi
+  replicas: 1
+  typeService: ClusterIP
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"

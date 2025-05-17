@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: langfuse-{{ .Values.clickhouse.applicationName }}
+  namespace: {{ .Values.clickhouse.namespace }}
+spec:
+  selector:
+    app: {{ .Values.clickhouse.applicationName }}
+  ports:
+    - name: http
+      port: {{ .Values.clickhouse.port_1 }}
+      targetPort: {{ .Values.clickhouse.port_1 }}
+    - name: native
+      port: {{ .Values.clickhouse.port_2 }}
+      targetPort: {{ .Values.clickhouse.port_2 }}
+  type: {{ .Values.clickhouse.typeService }}
