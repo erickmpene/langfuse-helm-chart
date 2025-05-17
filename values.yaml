@@ -9,13 +9,13 @@ postgresql:
   volumeName: postgres-storage
   claimName: postgres-storage
   mountPath: /var/lib/postgresql/data
-  storageClassName: nfs-langfuse
+  storageClassName: nfs-prod
   typeService: ClusterIP
   namespace: langfuse
   replication: 1
   port: 5432
   storage:
-    size: 10Gi
+    size: 3Gi
   resources:
     requests:
       cpu: "100m"
