@@ -71,3 +71,5 @@ parameters:
   server: <nfs-server-ip>
   share: /exported/path
 ```
+Replace <nfs-server-ip> and /exported/path with your actual NFS configuration.
+
