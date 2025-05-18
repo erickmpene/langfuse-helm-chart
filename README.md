@@ -49,7 +49,7 @@ All services (PostgreSQL, Redis, MinIO, ClickHouse) rely on this StorageClass to
 ### 🔧 Example: check if `nfs-prod` exists
 
 ```bash
-kubectl get storageclass
+kubectl get storageclass -A
 ```
 
 Expected output
