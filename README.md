@@ -50,6 +50,7 @@ All services (PostgreSQL, Redis, MinIO, ClickHouse) rely on this StorageClass to
 
 ```bash
 kubectl get storageclass
+```
 
 Expected output
 NAME         PROVISIONER       RECLAIMPOLICY   VOLUMEBINDINGMODE   ...
