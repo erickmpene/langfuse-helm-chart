@@ -34,21 +34,20 @@ This will deploy all resources into the `langfuse` namespace. The namespace will
 
 ---
 
-### ⚙️ Optional: Auto-create a namespace from `values.yaml`
-
-If you prefer, you can instruct the chart to create a namespace by setting the following in `values.yaml`:
-
-```yaml
-namespace:
-  create: true
-  name: langfuse
-```
 
 > ⚠️ **Important**: Even if a namespace is created this way, Helm will still deploy resources to the namespace defined by `--namespace`.  
 > If `--namespace` and `.Values.namespace.name` differ, **Helm uses `--namespace`**, and the one defined in `values.yaml` is only created but left empty.
 
 ---
 
-### ❌ Do not hardcode `namespace:` in templates
+## 🗄️ Persistent Volume Requirements
 
-This chart follows Helm best practices by not explicitly setting `metadata.namespace` in resource manifests. Helm handles namespace assignment automatically at deployment time.
+This chart requires that a `StorageClass` named `nfs-prod` is available in your cluster before deploying Langfuse.
+
+All services (PostgreSQL, Redis, MinIO, ClickHouse) rely on this StorageClass to dynamically provision their PersistentVolumeClaims (PVCs).
+
+### 🔧 Example: check if `nfs-prod` exists
+
+```bash
+kubectl get storageclass
+
