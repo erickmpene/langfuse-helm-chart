@@ -24,13 +24,13 @@ spec:
           image: {{ .Values.langfuse_web.image }}
           ports:
             - containerPort: {{ .Values.langfuse_web.port }}
-          # resources:
-          #   requests:
-          #       cpu: {{ .Values.langfuse_web.resources.requests.cpu }}
-          #       memory: {{ .Values.langfuse_web.resources.requests.memory }}
-          #   limits:
-          #       cpu: {{ .Values.langfuse_web.resources.limits.cpu | quote }}
-          #       memory: {{ .Values.langfuse_web.resources.limits.memory }}
+          resources:
+            requests:
+                cpu: {{ .Values.langfuse_web.resources.requests.cpu }}
+                memory: {{ .Values.langfuse_web.resources.requests.memory }}
+            limits:
+                cpu: {{ .Values.langfuse_web.resources.limits.cpu | quote }}
+                memory: {{ .Values.langfuse_web.resources.limits.memory }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.langfuse_worker.nameConfigmap }}

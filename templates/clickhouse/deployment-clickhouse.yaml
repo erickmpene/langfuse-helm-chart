@@ -57,13 +57,13 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
             failureThreshold: 3
-          # resources:
-          #   requests:
-          #       cpu: {{ .Values.clickhouse.resources.requests.cpu }}
-          #       memory: {{ .Values.clickhouse.resources.requests.memory }}
-          #   limits:
-          #       cpu: {{ .Values.clickhouse.resources.limits.cpu | quote }}
-          #       memory: {{ .Values.clickhouse.resources.limits.memory }}
+          resources:
+            requests:
+                cpu: {{ .Values.clickhouse.resources.requests.cpu }}
+                memory: {{ .Values.clickhouse.resources.requests.memory }}
+            limits:
+                cpu: {{ .Values.clickhouse.resources.limits.cpu | quote }}
+                memory: {{ .Values.clickhouse.resources.limits.memory }}
       volumes:
         - name: {{ .Values.clickhouse.volumeName_data }}
           persistentVolumeClaim:
