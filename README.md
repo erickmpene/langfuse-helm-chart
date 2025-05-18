@@ -56,7 +56,7 @@ Expected output
 ```bash
 NAME         PROVISIONER       RECLAIMPOLICY   VOLUMEBINDINGMODE   ...
 nfs-prod     <your-provisioner>   ...
-̀̀̀`̀̀``
+```
 
 ❗ If nfs-prod does not exist:
 
