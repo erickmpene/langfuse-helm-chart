@@ -14,6 +14,11 @@ spec:
       labels:
         app: {{ .Values.langfuse_web.applicationName }}
     spec:
+      initContainers:
+        - name: wait-for-worker
+          image: busybox
+          command: ['sh', '-c', 'until nc -z {{ .Values.langfuse_worker.applicationName }} {{ .Values.langfuse_worker.port }}; do echo waiting for worker; sleep 2; done']
+
       containers:
         - name: {{ .Values.langfuse_web.containerName }}
           image: {{ .Values.langfuse_web.image }}

@@ -10,3 +10,18 @@ spec:
       port: {{ .Values.langfuse_web.port }}
       targetPort: {{ .Values.langfuse_web.port }}
   type: {{ .Values.langfuse_web.typeService }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.langfuse_worker.applicationName }}
+spec:
+  selector:
+    app: {{ .Values.langfuse_worker.applicationName }}
+  ports:
+    - name: http
+      port: {{ .Values.langfuse_worker.port }}
+      targetPort: {{ .Values.langfuse_worker.port }}
+  type: {{ .Values.langfuse_worker.typeService }}

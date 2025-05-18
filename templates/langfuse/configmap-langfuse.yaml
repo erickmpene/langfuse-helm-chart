@@ -5,8 +5,8 @@ metadata:
 data:
   LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "true"
   CLICKHOUSE_CLUSTER_ENABLED: "false"
-  REDIS_HOST: "langfuse-{{ .Values.redis.applicationName }}"
-  LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: "http://langfuse-{{ .Values.minio.applicationName }}:{{ .Values.minio.port_1 }}"
+  REDIS_HOST: "{{ .Values.redis.applicationName }}"
+  LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: "http://{{ .Values.minio.applicationName }}:{{ .Values.minio.port_1 }}"
   LANGFUSE_S3_EVENT_UPLOAD_REGION: "auto"
   LANGFUSE_S3_EVENT_UPLOAD_PREFIX: "events/"
   LANGFUSE_S3_EVENT_UPLOAD_BUCKET: "{{ .Values.minio.bucketName }}"
@@ -14,11 +14,11 @@ data:
   LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
   LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: "{{ .Values.minio.bucketName }}"
   LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: "http://localhost:9090"
-  CLICKHOUSE_MIGRATION_URL: "clickhouse://langfuse-{{ .Values.clickhouse.applicationName }}:{{ .Values.clickhouse.port_2 }}"
+  CLICKHOUSE_MIGRATION_URL: "clickhouse://{{ .Values.clickhouse.applicationName }}:{{ .Values.clickhouse.port_2 }}"
   REDIS_PORT: "{{ .Values.redis.port }}"
   LANGFUSE_INGESTION_QUEUE_DELAY_MS:
   LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS:
-  CLICKHOUSE_URL: "http://langfuse-{{ .Values.clickhouse.applicationName }}:8123"
+  CLICKHOUSE_URL: "http://{{ .Values.clickhouse.applicationName }}:8123"
   LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: "media/"
   LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
   TELEMETRY_ENABLED: "true"
