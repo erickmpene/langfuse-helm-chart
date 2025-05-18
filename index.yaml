@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  langfuse:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-05-18T03:12:45.758469294+02:00"
+    description: Helm chart for deploying Langfuse and its services
+    digest: ff50f262cc8dd4b641701f3b6889eb3b7da9f8a088bc2fe8d5edd50cb8348b77
+    icon: https://private-user-images.githubusercontent.com/28005881/412808042-6b395716-9250-40a5-bb52-5c7e092a6bdd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDc1MDI4MTcsIm5iZiI6MTc0NzUwMjUxNywicGF0aCI6Ii8yODAwNTg4MS80MTI4MDgwNDItNmIzOTU3MTYtOTI1MC00MGE1LWJiNTItNWM3ZTA5MmE2YmRkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA1MTclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNTE3VDE3MjE1N1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE3YmI4YjYyODRkY2MxMTBhM2IyMmUxNzYyMmE5OWRjZDM3NjVkMGE0YzM2YmUxOWMxN2VlYjVkMWM2ZmM1ZGUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.x0rgStBKuDJ4m1R-Ms2_5ftYxtM_uzZwDbGzH3tmHzc
+    name: langfuse
+    type: application
+    urls:
+    - https://erickmpene.github.io/langfuse-helm-chart/langfuse-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-05-18T03:12:45.757119541+02:00"
