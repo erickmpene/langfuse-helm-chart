@@ -55,3 +55,14 @@ Expected output
 NAME         PROVISIONER       RECLAIMPOLICY   VOLUMEBINDINGMODE   ...
 nfs-prod     <your-provisioner>   ...
 
+❗ If nfs-prod does not exist:
+
+You must create it first, for example using the NFS CSI driver or your own storage backend. Here's a basic example for NFS:
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-prod
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: <nfs-server-ip>
+  share: /exported/path
